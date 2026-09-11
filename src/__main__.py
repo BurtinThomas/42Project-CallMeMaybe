@@ -1,5 +1,11 @@
 import argparse
 from pathlib import Path
+import sys
+import torch
+from llm_sdk import Small_LLM_Model
+
+LLM_SDK_DIR = Path(__file__).resolve().parent.parent / "llm_sdk"
+sys.path.insert(0, str(LLM_SDK_DIR))
 
 
 def parse_arguments() -> argparse.Namespace:
@@ -26,6 +32,13 @@ def parse_arguments() -> argparse.Namespace:
 def main() -> int:
     """Run the application."""
     args = parse_arguments()
+    model = Small_LLM_Model()
+    prompt = "how are you"
+    input_ids = model.encode(prompt)
+    logits = model.get_logits_from_input_ids(input_ids[0].tolist())
+    next_token_id = torch.tensor(logits).argmax().item()
+    print(f"Most likely next token: {model.decode([next_token_id])!r}")
     return 0
+
 
 main()

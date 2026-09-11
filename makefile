@@ -1,4 +1,5 @@
-PYTHON = uv run python
+UV_PROJECT = uv run --project llm_sdk
+PYTHON = $(UV_PROJECT) python
 
 FUNCTIONS_DEFINITION ?= data/input/functions_definition.json
 INPUT ?= data/input/function_calling_tests.json
@@ -7,7 +8,7 @@ OUTPUT ?= data/output/function_calling_results.json
 .PHONY: install run debug clean lint lint-strict
 
 install:
-	uv sync
+	uv sync --project llm_sdk
 
 run:
 	$(PYTHON) -m src \
